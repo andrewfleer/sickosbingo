@@ -1,0 +1,53 @@
+:root {
+    --width: 500px;
+    --border: 1px solid #000;
+}
+
+#bingo-card {
+    float: left; 
+    width: var(--width); 
+    height: auto; 
+    background-color: black;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+#bingo-card table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+border-radius:10px;
+overflow: hidden;
+}
+
+#bingo-card th, #bingo-card td {
+    border: var(--border);
+    width: 20%;
+    height: 90px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 20px;
+    font-family: sans-serif;
+}
+
+#bingo-card th {
+    background: #222;
+    color: #fff;
+    font-size: 2em;
+    letter-spacing: 2px;
+}
+
+#bingo-card td img {
+    display: block;
+    margin: 0 auto;
+    max-width: 60px;
+    max-height: 60px;
+}
+
+#bingo-card td {
+    background: #fafafa;
+}
+
+#bingo-card tr:nth-child(even) td {
+    background: #f0f0f0;
+}
