@@ -49,11 +49,30 @@ fetch('./js/values.txt')
                 img.style.height = '50px';
                 td.appendChild(img);
             } else {
-                td.textContent = selectedLines[lineIndex++];
+                const div = document.createElement('div');
+                div.className = 'cell-text';
+                div.textContent = selectedLines[lineIndex++];
+                td.appendChild(div);
             }
             tr.appendChild(td);
         }
         table.appendChild(tr);
     }
     bingoCard.appendChild(table);
+
+setTimeout(() => {
+    const cells = table.querySelectorAll('.cell-text');
+    cells.forEach(cell => {
+        let fontSize = 20;
+        cell.style.fontSize = fontSize + 'px';
+        const parentTd = cell.parentElement;
+        while (
+            (cell.scrollHeight > parentTd.clientHeight || cell.scrollWidth > parentTd.clientWidth) &&
+            fontSize > 4
+        ) {
+            fontSize -= 1;
+            cell.style.fontSize = fontSize + 'px';
+        }
+    });
+}, 0);
   })
