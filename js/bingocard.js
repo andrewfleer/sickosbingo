@@ -16,63 +16,52 @@ function getRandomLinesFromText(text, count) {
 fetch('./js/values.txt')
   .then(response => response.text())
   .then(text => {
-
-    const count = 24; // Number of random lines to select
+    const count = 24;
     const selectedLines = getRandomLinesFromText(text, count);
     const bingoCard = document.getElementById('bingo-card');
     bingoCard.innerHTML = '';
 
-    const table = document.createElement('table');
-
-    // Create header row
-    const thead = document.createElement('thead');
-    const headerRow = document.createElement('tr');
-    const headers = ['S', 'I', 'C', 'K', 'O'];
-    headers.forEach(header => {
-        const th = document.createElement('th');
-        th.textContent = header;
-        headerRow.appendChild(th);
+    // Add header cells
+    ['S', 'I', 'C', 'K', 'O'].forEach(letter => {
+        const headerDiv = document.createElement('div');
+        headerDiv.className = 'bingo-header';
+        headerDiv.textContent = letter;
+        bingoCard.appendChild(headerDiv);
     });
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
-    let lineIndex = 0; 
 
+    let lineIndex = 0;
     for (let row = 0; row < 5; row++) {
-        const tr = document.createElement('tr');
         for (let col = 0; col < 5; col++) {
-            const td = document.createElement('td');
+            const cellDiv = document.createElement('div');
+            cellDiv.className = 'bingo-cell';
             if (row === 2 && col === 2) {
                 const img = document.createElement('img');
                 img.src = './img/sickosface.jpg';
                 img.alt = 'Free Space';
-                img.style.width = '50px';
-                img.style.height = '50px';
-                td.appendChild(img);
+                cellDiv.appendChild(img);
             } else {
-                const div = document.createElement('div');
-                div.className = 'cell-text';
-                div.textContent = selectedLines[lineIndex++];
-                td.appendChild(div);
+                const textDiv = document.createElement('div');
+                textDiv.className = 'cell-text';
+                textDiv.textContent = selectedLines[lineIndex++];
+                cellDiv.appendChild(textDiv);
             }
-            tr.appendChild(td);
+            bingoCard.appendChild(cellDiv);
         }
-        table.appendChild(tr);
     }
-    bingoCard.appendChild(table);
 
-setTimeout(() => {
-    const cells = table.querySelectorAll('.cell-text');
-    cells.forEach(cell => {
-        let fontSize = 20;
-        cell.style.fontSize = fontSize + 'px';
-        const parentTd = cell.parentElement;
-        while (
-            (cell.scrollHeight > parentTd.clientHeight || cell.scrollWidth > parentTd.clientWidth) &&
-            fontSize > 4
-        ) {
-            fontSize -= 1;
+    // Font shrinking
+    requestAnimationFrame(() => {
+        const cells = document.querySelectorAll('.cell-text');
+        cells.forEach(cell => {
+            let fontSize = 20;
             cell.style.fontSize = fontSize + 'px';
-        }
+            while (
+                (cell.scrollHeight > cell.clientHeight || cell.scrollWidth > cell.clientWidth) &&
+                fontSize > 2
+            ) {
+                fontSize -= 1;
+                cell.style.fontSize = fontSize + 'px';
+            }
+        });
     });
-}, 0);
-  })
+});
